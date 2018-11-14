@@ -1,0 +1,36 @@
+<?php
+
+// Имя поля ввода своей ТК.
+define('GF_CUSTOM_OWN_CARGO_FIELD', 'ucxf_own_transport_company');
+// HTML-элемент поля выбора ТК, при выборе которого будет видимым поле 
+// ввода своей ТК.
+define('GF_CUSTOM_OWN_CARGO_VISIBLE_JQ_ELEMENT', '#edit-panes-delivery-address-delivery-ucxf-cargo-company');
+// Имя элемента списка выбора ТК, при выборе которого будет видимым поле 
+// ввода своей ТК.
+define('GF_CUSTOM_OWN_CARGO_VISIBLE_VAL', 'own_cargo');
+
+/**
+ * Implements hook_uc_addresses_address_fields_alter()
+ *
+ * Обрабатываем поля доставки транспортной компанией,
+ * доступные при оформлении заказа.
+ *
+ */
+function gf_custom_uc_addresses_address_field_alter(&$element) {
+  // Обработка поля ввода своей трасп-й комп-и.
+  if (isset($element[GF_CUSTOM_OWN_CARGO_FIELD])) {
+    // Заголовок поля не нужен.
+    $element[GF_CUSTOM_OWN_CARGO_FIELD]['#title'] = '';
+    $condition = array(
+      '#edit-panes-delivery-address-delivery-ucxf-cargo-company' => array(
+        'value' => GF_CUSTOM_OWN_CARGO_VISIBLE_VAL
+      ),
+    );
+    // Появлятся это полу будет только если покупатель выбрал
+    // доставку своей ТК в соответствующем поле.
+    $element[GF_CUSTOM_OWN_CARGO_FIELD]['#states'] = array(
+            'visible' => $condition,
+            'required' => $condition,
+        );
+  }
+}

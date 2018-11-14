@@ -1,0 +1,7 @@
+name = GF Custom
+description = Custom features for the site.
+package = Giorgio Ferretti
+core = 7.x
+
+
+dependencies[] = uc_addresses
