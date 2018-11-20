@@ -34,3 +34,32 @@ function gf_custom_uc_addresses_address_field_alter(&$element) {
         );
   }
 }
+
+/**
+ * Implements hook_uc_add_to_cart()
+ */
+function gf_custom_uc_add_to_cart($nid, $qty, $data) {
+  $result = [];
+  if (!user_access('create orders')) {
+    // Запрещаем пользователям с отсутствием прав на создание заказов
+    // добавлять товары в карзину.
+    $result[] = array(
+      'success' => FALSE,
+      'message' => t('Sorry, you cannot create orders.'),
+    );
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_uc_checkout_start()
+ */
+function gf_custom_uc_cart_checkout_start($order) {
+  $account = user_load($order->uid);
+  // Запрещаем пользователям с отсутствием прав на создание заказов эти
+  // заказы создавать.
+  if (!user_access('create orders', $account)) {
+    drupal_set_message(t('Sorry, you cannot create orders.', 'error'));
+    drupal_goto('cart');
+  }
+}
