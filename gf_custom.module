@@ -63,3 +63,32 @@ function gf_custom_uc_cart_checkout_start($order) {
     drupal_goto('cart');
   }
 }
+
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ *
+ */
+function gf_custom_form_user_register_form_alter(&$form, &$form_state) {
+  global $language;
+  $prefix = strtoupper($language->prefix);
+  $country_options = &$form['field_country_name'][LANGUAGE_NONE]['#options'];
+  $lang_pref_options = &$form['field_language_pref'][LANGUAGE_NONE]['#options'];
+  if (isset($country_options[$prefix])) {
+    $options = [];
+    $options[$prefix] = $country_options[$prefix]; // текущий регион в самом вверху.
+    // В списке выбора стран ставим Россию, Италию и Китай в начало списка.
+    foreach (['RU', 'IT', 'CN'] as $key) {
+      if ($key != $prefix) $options[$key] = $country_options[$key];
+      unset($country_options[$key]);
+    }
+    $country_options = $options + $country_options;
+    // В форме регистрации выбираем значение по-умолчанию для  поля "Страна" в
+    // зависимости от языка пользователя.
+    $form['field_country_name'][LANGUAGE_NONE]['#default_value'] = $prefix;
+  }
+  if (isset($lang_pref_options[$language->prefix])) {
+    $form['field_language_pref'][LANGUAGE_NONE]['#default_value'] = $language->prefix;
+  }
+}
+
