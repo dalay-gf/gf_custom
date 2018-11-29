@@ -90,5 +90,15 @@ function gf_custom_form_user_register_form_alter(&$form, &$form_state) {
   if (isset($lang_pref_options[$language->prefix])) {
     $form['field_language_pref'][LANGUAGE_NONE]['#default_value'] = $language->prefix;
   }
+
+  // Подключаем к форме скрипт отправки данных на Roistat.
+  $form['#attached']['js'][] = drupal_get_path('module', 'gf_custom') . '/js/roistat.js';
 }
 
+function gf_custom_preprocess_node(&$variables) {
+  if ($variables['node']->nid == 96965) {
+    // Подключаем скрипт передачи данных в Roistat на 
+    // странице invite.
+    drupal_add_js(drupal_get_path('module', 'gf_custom') . '/js/roistat.js');
+  }
+}
