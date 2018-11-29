@@ -97,9 +97,12 @@ function gf_custom_form_user_register_form_alter(&$form, &$form_state) {
 
 function gf_custom_preprocess_node(&$variables) {
   if ($variables['node']->nid == 96965) {
+    $path = drupal_get_path('module', 'gf_custom');
     // Подключаем скрипт передачи данных в Roistat на 
     // странице invite.
-    drupal_add_js(drupal_get_path('module', 'gf_custom') . '/js/roistat.js');
+    drupal_add_js($path . '/js/roistat.js');
+    // Подключаем скрипт для извратов над страницей invite.
+    drupal_add_js($path . '/js/gf_custom_invite.js');
   }
 }
 
@@ -116,3 +119,5 @@ function gf_custom_preprocess_views_view(&$vars) {
     $vars['pager'] = check_markup($pager_string, 'dynamic_shortcodes');
   }
 }
+
+

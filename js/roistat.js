@@ -1,6 +1,6 @@
 (function ($) {
 
-    Drupal.behaviors.initColorboxInline = {
+    Drupal.behaviors.gfCustomRoistat = {
         attach: function (context, settings) {
             var form = $('form[action$="invite"], form#user-register-form', context);
             var page = window.location.hostname + window.location.pathname;
