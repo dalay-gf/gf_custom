@@ -3,6 +3,7 @@
     Drupal.behaviors.initColorboxInline = {
         attach: function (context, settings) {
             var form = $('form[action$="invite"], form#user-register-form', context);
+            var page = window.location.hostname + window.location.pathname;
 
             form.submit(function(e) {
                 var data = {};
@@ -18,12 +19,12 @@
                 if (form[0].id.startsWith('webform-uuid')) { // форма со страницы invite
                     var phone = data['submitted[phone_number]'];
                     var email = data['submitted[e_mail]'];
-                    var title = Drupal.t('New request from giorgio-ferretti.it');
+                    var title = Drupal.t('New request from @page', {'@page': page} );
                 } 
                 else { // форма со страницы регистрации
                     var phone = data['field_telefon[und][0][value]'];
                     var email = data['mail'];
-                    var title = Drupal.t('New registration on giorgio-ferretti.it');
+                    var title = Drupal.t('New registration on @page', {'@page': page});
 
                     var username = data['field_firstname[und][0][value]'];
                     var registration = "registration";
