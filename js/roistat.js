@@ -7,16 +7,15 @@
 
             form.submit(function(e) {
                 var data = {};
-                $this = $(this);
                 // e.preventDefault();
-                $this.find('input, textearea, select').each(function() {
+                $(this).find('input, textearea, select').each(function() {
                     // добавим новое свойство к объекту $data
                     // имя свойства – значение атрибута name элемента
                     // значение свойства – значение свойство value элемента
                     data[this.name] = $(this).val();
                 });
 
-                if (form[0].id.startsWith('webform-uuid')) { // форма со страницы invite
+                if ($('input[name="submitted[phone_number]"]').length) { // форма со страницы invite
                     var phone = data['submitted[phone_number]'];
                     var email = data['submitted[e_mail]'];
                     var title = Drupal.t('New request from @page', {'@page': page} );
