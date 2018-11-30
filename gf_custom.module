@@ -92,7 +92,8 @@ function gf_custom_form_user_register_form_alter(&$form, &$form_state) {
   }
 
   // Подключаем к форме скрипт отправки данных на Roistat.
-  $form['#attached']['js'][] = drupal_get_path('module', 'gf_custom') . '/js/roistat.js';
+  // $form['#attached']['js'][] = drupal_get_path('module', 'gf_custom') . '/js/roistat.js';
+  drupal_add_js(drupal_get_path('module', 'gf_custom') . '/js/roistat.js');
 }
 
 function gf_custom_preprocess_node(&$variables) {
