@@ -2,6 +2,8 @@ name = GF Custom
 description = Custom features for the site.
 package = Giorgio Ferretti
 core = 7.x
-
+php = 7.0
 
 dependencies[] = uc_addresses
+
+stylesheets[all][] = css/gf_custom.css

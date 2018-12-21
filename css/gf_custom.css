@@ -1,0 +1,18 @@
+#cart-icon-menu-item i {
+    font-size: 32px;
+    top: 4px;
+}
+#cart-item-counter {
+    height: 20px;
+    width: 20px;
+    background-color: #f85d5d;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    line-height: 20px;
+    font-size: 70%;
+    color: #fff;
+    position: absolute;
+    right: 5px;
+    top: 2px;
+}

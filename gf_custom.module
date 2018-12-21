@@ -48,6 +48,7 @@ function gf_custom_uc_add_to_cart($nid, $qty, $data) {
       'message' => t('Sorry, you cannot create orders.'),
     );
   }
+
   return $result;
 }
 
@@ -96,6 +97,9 @@ function gf_custom_form_user_register_form_alter(&$form, &$form_state) {
   drupal_add_js(drupal_get_path('module', 'gf_custom') . '/js/roistat.js');
 }
 
+/**
+ * Implements hook_preprocess_node()
+ */
 function gf_custom_preprocess_node(&$variables) {
   if ($variables['node']->nid == 96965) {
     $path = drupal_get_path('module', 'gf_custom');
@@ -105,6 +109,14 @@ function gf_custom_preprocess_node(&$variables) {
     // Подключаем скрипт для извратов над страницей invite.
     drupal_add_js($path . '/js/gf_custom_invite.js');
   }
+}
+
+/**
+ * Implements hook_preprocess_page()
+ */
+function gf_custom_preprocess_page(&$vars) {
+  // Счетчик товаров в корзине(отдельных позиций, не количество).
+  $vars['uc_cart_items_counter'] = count(uc_cart_get_contents());
 }
 
 
@@ -120,5 +132,3 @@ function gf_custom_preprocess_views_view(&$vars) {
     $vars['pager'] = check_markup($pager_string, 'dynamic_shortcodes');
   }
 }
-
-
