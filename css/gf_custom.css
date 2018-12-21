@@ -15,9 +15,12 @@
     line-height: 20px;
     font-size: 70%;
     color: #fff;
-    position: absolute;
-    right: 5px;
-    top: 2px;
+    /* position: absolute; */
+    /* right: 5px; */
+    /* top: 2px; */
+    position: relative;
+	right: 18px;
+	bottom: 18px;
 }
 a.repeat-order-link {
     text-transform: uppercase;
