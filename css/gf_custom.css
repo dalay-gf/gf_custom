@@ -1,6 +1,9 @@
 #cart-icon-menu-item i {
     font-size: 32px;
-    top: 4px;
+	top: 4px;
+	border: 1px solid;
+	padding: 4px;
+	border-radius: 6px;
 }
 #cart-item-counter {
     height: 20px;
