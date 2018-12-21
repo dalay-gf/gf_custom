@@ -16,3 +16,6 @@
     right: 5px;
     top: 2px;
 }
+a.repeat-order-link {
+    text-transform: uppercase;
+}
