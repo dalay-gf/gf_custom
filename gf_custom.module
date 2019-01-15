@@ -154,3 +154,16 @@ function gf_custom_preprocess_views_view(&$vars) {
     $vars['pager'] = check_markup($pager_string, 'dynamic_shortcodes');
   }
 }
+
+
+/**
+ * Implements hook_uc_cart_pane_alter().
+ */
+function gf_custom_uc_cart_pane_alter(&$panes, $items) {
+  // Добавляем строку с информацией об общем кол-ве заказанного под строку с
+  // общей стоимостью.
+  $total_price_index = count(uc_cart_get_contents());
+  $total_price_value = $panes['cart_form']['body']['items'][$total_price_index]['total']['#prefix'];
+  $total_qty_string = '<div id="total-qty"><span>' . t('Total qty:') . '</span>' . uc_cart_get_total_qty() . '</div>';
+  $panes['cart_form']['body']['items'][$total_price_index]['total']['#suffix'] .= $total_qty_string;
+}
