@@ -24,5 +24,5 @@ a.repeat-order-link {
 }
 #uc-cart-view-form #total-qty {
     position: relative;
-    bottom: 30px;
+    bottom: 1rem;
 }
