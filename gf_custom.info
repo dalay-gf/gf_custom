@@ -4,6 +4,7 @@ package = Giorgio Ferretti
 core = 7.x
 php = 7.0
 
+
 dependencies[] = uc_addresses
 dependencies[] = uc_order
 
