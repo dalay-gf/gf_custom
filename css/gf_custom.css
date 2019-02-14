@@ -26,3 +26,11 @@ a.repeat-order-link {
     position: relative;
     bottom: 1rem;
 }
+
+.fau .add-to-cart-link {
+    float: right;
+}
+.fau .add-to-cart-link a {
+    font-family: FontAwesome !important;
+    font-size: 24px;
+}

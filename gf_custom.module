@@ -30,7 +30,7 @@ function gf_custom_menu() {
     $items['gf/addtocart/%node'] = array(
       'title'           => 'Add item to your cart',
       'page callback'   => 'gf_custom_addtocart',
-      'page arguments'  => [2,],
+      'page arguments'  => [2, 3],
       'access arguments' => ['create orders'],
       'type'            => MENU_CALLBACK,
       'file'            => 'gf_custom.pages.inc'
@@ -190,16 +190,21 @@ function gf_custom_addtocart_link($node) {
     $link = [
       '#theme' => 'link',
       '#text' => t('Add to cart'),
-      '#path' => 'gf/addtocart/' . $node->nid,
+      '#path' => 'gf/addtocart/' . $node->nid . '/nojs/',
       '#options' => [
-        'query' => drupal_get_destination(),
+        // 'query' => drupal_get_destination(),
         'attributes' => [
+          'class' => ['use-ajax', 'btn-primary', 'btn'],
+          'role' => 'button',
           'title' => t('Add item "@product" to your cart', 
           ['@product'=>$node->title]),
         ]
       ],
-      '#prefix' => '<div data-product-nid="'. $node->nid .'" class="add-to-cart-link">',
-      '#suffix' => '</div>'
+      '#prefix' => '<div class="add-to-cart-link">',
+      '#suffix' => '</div>',
+      '#ajax' => [
+        'effect' => 'fade',
+      ],
     ]; 
     return render($link);
   }
