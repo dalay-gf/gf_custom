@@ -152,6 +152,8 @@ function gf_custom_preprocess_node(&$variables) {
 function gf_custom_preprocess_page(&$vars) {
   // Счетчик товаров в корзине(отдельных позиций, не количество).
   $vars['uc_cart_items_counter'] = count(uc_cart_get_contents());
+  // Счетчик общего количества единиц товаров в корзине.
+  $vars['uc_cart_qty_counter'] = uc_cart_get_total_qty();
 }
 
 
