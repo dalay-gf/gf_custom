@@ -9,6 +9,14 @@ define('GF_CUSTOM_OWN_CARGO_VISIBLE_JQ_ELEMENT', '#edit-panes-delivery-address-d
 // ввода своей ТК.
 define('GF_CUSTOM_OWN_CARGO_VISIBLE_VAL', 'own_cargo');
 
+// Заголовки для страниц, объединяющих несколько терминов таксономии 
+// и сформированных через Views.
+define('GF_CUSTOM_VIEWS_PAGE_TITLE', [
+  '2756,2764'=> t('Bags'), // Сумки (муж., женские...)
+  '2769,2771,2770,2752' => t('Wallets'), // Кошельки 
+  '2795,2803' => t('Belts') // Ремни...
+]);
+
 
 
 /**
@@ -214,3 +222,15 @@ function gf_custom_addtocart_link($node) {
   return '';
 }
 
+/**
+ * Implements hook_views_pre_reder().
+ */
+function gf_custom_views_pre_render(&$view)  {
+  $args = $view->args[0] ?? FALSE;
+  // Изменяем заголовки для страниц, где арументом являются несколько
+  // терминов таксономии.
+  if ($view->name == 'products' 
+    && $args && isset(GF_CUSTOM_VIEWS_PAGE_TITLE[$args])) {
+    $view->set_title(GF_CUSTOM_VIEWS_PAGE_TITLE[$args]);
+  }
+}
