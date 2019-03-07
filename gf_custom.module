@@ -17,6 +17,10 @@ define('GF_CUSTOM_VIEWS_PAGE_TITLE', [
   '2795,2803' => 'Belts' // Ремни...
 ]);
 
+// Поле ноды-товара, содержащее значение терминов словаря-каталога.
+define('GF_CUSTOM_CATALOG_NODE_FIELD', 'field_catalog');
+
+
 
 
 /**
@@ -141,6 +145,7 @@ function gf_custom_form_user_register_form_alter(&$form, &$form_state) {
  */
 function gf_custom_preprocess_node(&$variables) {
   $node = $variables['node'];
+
   if (uc_product_is_product($node)) {
     $variables['gf_addtocart_link'] = gf_custom_addtocart_link($node);
   }
@@ -254,4 +259,43 @@ function _get_node_field($node, $field, $lang = 'en') {
       $var = $node->{$field};
   }
   return $var;
+}
+
+
+/**
+ * Implements hook_node_view().
+ */
+function gf_custom_node_view($node, $view_mode) {
+  static $parents = array();
+
+  if (uc_product_is_product($node->type) && isset($node->{GF_CUSTOM_CATALOG_NODE_FIELD})) {
+    // Поправляем крошки на странице продукта согласно 
+    // иерархии терминов в словаре-каталоге.
+    if ($view_mode == 'full' && variable_get('uc_catalog_breadcrumb', TRUE)) {
+      $crumbs = array();
+      if (variable_get('site_frontpage', 'node') != 'catalog') {
+        $crumbs[] = l(t('Home'), '');
+      }
+
+      if ($terms = field_get_items('node', $node, GF_CUSTOM_CATALOG_NODE_FIELD)) {
+        $crumbs[] = l(t('Catalog'), 'taxonomy/term/all');
+        $used_tids = array();
+
+        foreach ($terms as $term) {
+          if (!isset($parents[$term['tid']])) {
+            $parents[$term['tid']] = taxonomy_get_parents_all($term['tid']);
+          }
+
+          foreach (array_reverse($parents[$term['tid']]) as $parent) {
+            if (!in_array($parent->tid, $used_tids)) {
+              $crumbs[] = l($parent->name, 'taxonomy/term/' . $parent->tid);
+              $used_tids[] = $parent->tid;
+            }
+          }
+        }
+      }
+
+      drupal_set_breadcrumb($crumbs);
+    }
+  }
 }
