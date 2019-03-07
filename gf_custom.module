@@ -234,3 +234,24 @@ function gf_custom_views_pre_render(&$view)  {
     $view->set_title(t(GF_CUSTOM_VIEWS_PAGE_TITLE[$args]));
   }
 }
+
+
+/**
+ * Функция объявлена временно. Перенесена из "старого" шаблона для правильной работы
+ * с модулями, идущими вместе со старым шабом. 
+ * После избавления от этих модулей фунцию можно удалить.
+ */
+function _get_node_field($node, $field, $lang = 'en') {
+  global $language;
+  $var = FALSE;
+  if(isset($node->{$field}[$lang]) && !empty($node->{$field}[$lang])) {
+      $var = $node->{$field}[$lang];
+  } elseif(isset($node->{$field}[$language->language]) && !empty($node->{$field}[$language->language])) {
+      $var = $node->{$field}[$language->language];
+  } elseif(isset($node->{$field}['und']) && !empty($node->{$field}['und'])) {
+      $var = $node->{$field}['und'];
+  } elseif(isset($node->{$field}) && !empty($node->{$field})) {
+      $var = $node->{$field};
+  }
+  return $var;
+}
