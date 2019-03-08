@@ -369,6 +369,11 @@ function gf_custom_form_alter(&$form, &$form_state, $form_id) {
     unset($form['actions']['continue_shopping'], $form['actions']['update']);
   }
   if($form_id == 'uc_cart_checkout_form') {
+    if (isset($form['panes']['delivery']['next'])) {
+      // Убираем кнопку "Далее" из блока информации о доставке(если она
+      // там есть).
+      unset($form['panes']['delivery']['next']);
+    }
     foreach ($form['panes'] as $key => $pane) {
       if (is_array($pane) && isset($pane['next'])) {
         $form['panes'][$key]['next']['#attributes']['class'] = array('btn-primary');
