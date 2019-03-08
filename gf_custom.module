@@ -208,6 +208,7 @@ function gf_custom_addtocart_link($node) {
       '#path' => 'gf/addtocart/' . $node->nid . '/nojs/',
       '#options' => [
         // 'query' => drupal_get_destination(),
+        'html' => FALSE,
         'attributes' => [
           'class' => ['use-ajax', 'btn-primary', 'btn'],
           'role' => 'button',
