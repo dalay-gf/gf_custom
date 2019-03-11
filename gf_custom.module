@@ -173,15 +173,15 @@ function gf_custom_preprocess_page(&$vars) {
 /**
  * Implements hook_preprocess_views_view()
  */
-function gf_custom_preprocess_views_view(&$vars) {
-  // На странице новинок показываем анонимному поль-лю фейковый пейджер.
-  if (user_is_anonymous() &&
-    $vars['view']->name == 'products' && $vars['display_id'] == 'novelty') {
-    $pager_string = '<hr>
-      [button class="btn btn-sm btn-primary" link = "#"]1[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]2[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]3[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]4[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]→[/button]';
-    $vars['pager'] = check_markup($pager_string, 'dynamic_shortcodes');
-  }
-}
+// function gf_custom_preprocess_views_view(&$vars) {
+//   // На странице новинок показываем анонимному поль-лю фейковый пейджер.
+//   if (user_is_anonymous() &&
+//     $vars['view']->name == 'products' && $vars['display_id'] == 'novelty') {
+//     $pager_string = '<hr>
+//       [button class="btn btn-sm btn-primary" link = "#"]1[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]2[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]3[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]4[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]→[/button]';
+//     $vars['pager'] = check_markup($pager_string, 'dynamic_shortcodes');
+//   }
+// }
 
 
 /**
