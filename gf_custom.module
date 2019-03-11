@@ -2,18 +2,18 @@
 
 // Имя поля ввода своей ТК.
 define('GF_CUSTOM_OWN_CARGO_FIELD', 'ucxf_own_transport_company');
-// HTML-элемент поля выбора ТК, при выборе которого будет видимым поле 
+// HTML-элемент поля выбора ТК, при выборе которого будет видимым поле
 // ввода своей ТК.
 define('GF_CUSTOM_OWN_CARGO_VISIBLE_JQ_ELEMENT', '#edit-panes-delivery-address-delivery-ucxf-cargo-company');
-// Имя элемента списка выбора ТК, при выборе которого будет видимым поле 
+// Имя элемента списка выбора ТК, при выборе которого будет видимым поле
 // ввода своей ТК.
 define('GF_CUSTOM_OWN_CARGO_VISIBLE_VAL', 'own_cargo');
 
-// Заголовки для страниц, объединяющих несколько терминов таксономии 
+// Заголовки для страниц, объединяющих несколько терминов таксономии
 // и сформированных через Views.
 define('GF_CUSTOM_VIEWS_PAGE_TITLE', [
   '2756,2764'=> 'Bags', // Сумки (муж., женские...)
-  '2769,2771,2770,2752' => 'Wallets', // Кошельки 
+  '2769,2771,2770,2752' => 'Wallets', // Кошельки
   '2795,2803' => 'Belts' // Ремни...
 ]);
 
@@ -30,23 +30,23 @@ function gf_custom_menu() {
 
   $items = array();
 
-    $items['user/%user/reorder/%'] = array(
-      'title'           => 'Re-Order Button callback',
-      'page callback'   => '_gf_custom_uc_reorder',
-      'page arguments'  => [1, 3],
-      'access arguments' => ['create orders'],
-      'type'            => MENU_CALLBACK,
-      'file'            => 'gf_custom.uc_reorder.inc'
-    );
+  $items['user/%user/reorder/%'] = array(
+    'title'           => 'Re-Order Button callback',
+    'page callback'   => '_gf_custom_uc_reorder',
+    'page arguments'  => [1, 3],
+    'access arguments' => ['create orders'],
+    'type'            => MENU_CALLBACK,
+    'file'            => 'gf_custom.uc_reorder.inc'
+  );
 
-    $items['gf/addtocart/%node'] = array(
-      'title'           => 'Add item to your cart',
-      'page callback'   => 'gf_custom_addtocart',
-      'page arguments'  => [2, 3],
-      'access arguments' => ['create orders'],
-      'type'            => MENU_CALLBACK,
-      'file'            => 'gf_custom.pages.inc'
-    );
+  $items['gf/addtocart/%node'] = array(
+    'title'           => 'Add item to your cart',
+    'page callback'   => 'gf_custom_addtocart',
+    'page arguments'  => [2, 3],
+    'access arguments' => ['create orders'],
+    'type'            => MENU_CALLBACK,
+    'file'            => 'gf_custom.pages.inc'
+  );
 
   return $items;
 }
@@ -72,9 +72,9 @@ function gf_custom_uc_addresses_address_field_alter(&$element) {
     // Появлятся это полу будет только если покупатель выбрал
     // доставку своей ТК в соответствующем поле.
     $element[GF_CUSTOM_OWN_CARGO_FIELD]['#states'] = array(
-            'visible' => $condition,
-            'required' => $condition,
-        );
+      'visible' => $condition,
+      'required' => $condition,
+    );
   }
 }
 
@@ -151,7 +151,7 @@ function gf_custom_preprocess_node(&$variables) {
   }
   if ($node->nid == 96965) {
     $path = drupal_get_path('module', 'gf_custom');
-    // Подключаем скрипт передачи данных в Roistat на 
+    // Подключаем скрипт передачи данных в Roistat на
     // странице invite.
     drupal_add_js($path . '/js/roistat.js');
     // Подключаем скрипт для извратов над страницей invite.
@@ -175,10 +175,10 @@ function gf_custom_preprocess_page(&$vars) {
  */
 function gf_custom_preprocess_views_view(&$vars) {
   // На странице новинок показываем анонимному поль-лю фейковый пейджер.
-  if (user_is_anonymous() && 
+  if (user_is_anonymous() &&
     $vars['view']->name == 'products' && $vars['display_id'] == 'novelty') {
     $pager_string = '<hr>
-[button class="btn btn-sm btn-primary" link = "#"]1[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]2[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]3[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]4[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]→[/button]';
+      [button class="btn btn-sm btn-primary" link = "#"]1[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]2[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]3[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]4[/button]&nbsp;[button class="btn btn-sm btn-default" link = "/user/register"]→[/button]';
     $vars['pager'] = check_markup($pager_string, 'dynamic_shortcodes');
   }
 }
@@ -212,7 +212,7 @@ function gf_custom_addtocart_link($node) {
         'attributes' => [
           'class' => ['use-ajax', 'btn-primary', 'btn'],
           'role' => 'button',
-          'title' => t('Add item "@product" to your cart', 
+          'title' => t('Add item "@product" to your cart',
           ['@product'=>$node->title]),
         ]
       ],
@@ -221,7 +221,7 @@ function gf_custom_addtocart_link($node) {
       '#ajax' => [
         'effect' => 'fade',
       ],
-    ]; 
+    ];
     return render($link);
   }
 
@@ -235,7 +235,7 @@ function gf_custom_views_pre_render(&$view)  {
   $args = $view->args[0] ?? FALSE;
   // Изменяем заголовки для страниц, где арументом являются несколько
   // терминов таксономии.
-  if ($view->name == 'products' 
+  if ($view->name == 'products'
     && $args && isset(GF_CUSTOM_VIEWS_PAGE_TITLE[$args])) {
     $view->set_title(t(GF_CUSTOM_VIEWS_PAGE_TITLE[$args]));
   }
@@ -244,20 +244,20 @@ function gf_custom_views_pre_render(&$view)  {
 
 /**
  * Функция объявлена временно. Перенесена из "старого" шаблона для правильной работы
- * с модулями, идущими вместе со старым шабом. 
+ * с модулями, идущими вместе со старым шабом.
  * После избавления от этих модулей фунцию можно удалить.
  */
 function _get_node_field($node, $field, $lang = 'en') {
   global $language;
   $var = FALSE;
   if(isset($node->{$field}[$lang]) && !empty($node->{$field}[$lang])) {
-      $var = $node->{$field}[$lang];
+    $var = $node->{$field}[$lang];
   } elseif(isset($node->{$field}[$language->language]) && !empty($node->{$field}[$language->language])) {
-      $var = $node->{$field}[$language->language];
+    $var = $node->{$field}[$language->language];
   } elseif(isset($node->{$field}['und']) && !empty($node->{$field}['und'])) {
-      $var = $node->{$field}['und'];
+    $var = $node->{$field}['und'];
   } elseif(isset($node->{$field}) && !empty($node->{$field})) {
-      $var = $node->{$field};
+    $var = $node->{$field};
   }
   return $var;
 }
@@ -269,14 +269,14 @@ function _get_node_field($node, $field, $lang = 'en') {
 function gf_custom_node_view($node, $view_mode) {
   static $parents = array();
 
-  if (uc_product_is_product($node->type) && isset($node->{GF_CUSTOM_CATALOG_NODE_FIELD})) {
-    // Поправляем крошки на странице продукта согласно 
+  if ($view_mode == 'full' && (uc_product_is_product($node->type) || $node->type == 'page')) {
+    $crumbs = array();
+    if (variable_get('site_frontpage', 'node') != 'catalog') {
+      $crumbs[] = l(t('Home'), '');
+    }
+    // Поправляем крошки на странице продукта согласно
     // иерархии терминов в словаре-каталоге.
-    if ($view_mode == 'full' && variable_get('uc_catalog_breadcrumb', TRUE)) {
-      $crumbs = array();
-      if (variable_get('site_frontpage', 'node') != 'catalog') {
-        $crumbs[] = l(t('Home'), '');
-      }
+    if (isset($node->{GF_CUSTOM_CATALOG_NODE_FIELD})) {
 
       if ($terms = field_get_items('node', $node, GF_CUSTOM_CATALOG_NODE_FIELD)) {
         $crumbs[] = l(t('Catalog'), 'taxonomy/term/all');
@@ -295,9 +295,11 @@ function gf_custom_node_view($node, $view_mode) {
           }
         }
       }
-
-      drupal_set_breadcrumb($crumbs);
     }
+
+    $crumbs[] = $node->title;
+
+    drupal_set_breadcrumb($crumbs);
   }
 }
 
@@ -350,7 +352,7 @@ function gf_custom_form_alter(&$form, &$form_state, $form_id) {
     $form['items']['#columns']['qty']['cell'] = t('Quantity');
     $form['items']['#columns']['desc']['cell'] = t('Product');
     $form['items']['#columns']['price'] = array(
-      'cell' => t('Price'), 
+      'cell' => t('Price'),
       'weight' => 3
     );
     $form['items']['#columns']['image'] = array(
