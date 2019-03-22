@@ -1,5 +1,6 @@
 <?php
 
+
 // Имя поля ввода своей ТК.
 define('GF_CUSTOM_OWN_CARGO_FIELD', 'ucxf_own_transport_company');
 // HTML-элемент поля выбора ТК, при выборе которого будет видимым поле
@@ -19,8 +20,6 @@ define('GF_CUSTOM_VIEWS_PAGE_TITLE', [
 
 // Поле ноды-товара, содержащее значение терминов словаря-каталога.
 define('GF_CUSTOM_CATALOG_NODE_FIELD', 'field_catalog');
-
-
 
 
 /**
@@ -437,8 +436,13 @@ function gf_custom_tapir_table_alter(&$table, $table_id) {
     foreach (element_children($table) as $key) {
       if (!empty($table['#parameters'][1][$key]['nid'])) {
         $node = node_load($table['#parameters'][1][$key]['nid']['#value']);
+
+        $region = gf_stock_get_current_region();
+        $price = (int) $node->gf_region_prices[$region];
+
+        // Отображаем цену для текущего региона.
         $table[$key]['price'] = array(
-          '#markup' => theme('uc_product_price',array('element' => array('#value' => $node->sell_price))),
+          '#markup' => theme('uc_product_price',array('element' => array('#value' => $price))),
         );
         $image = _get_node_field($node, 'uc_product_image');
         $table[$key]['image'] = array(
@@ -452,3 +456,15 @@ function gf_custom_tapir_table_alter(&$table, $table_id) {
     }
   }
 }
+
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function gf_custom_preprocess_uc_price(&$variables) {
+  // Добавляем название валюты(после суммы) в зависимости от
+  // текущего региона.
+  $region = gf_stock_get_current_region();
+  $variables['suffixes'][] = GF_STOCK_CURRENCY_SYGN[$region];
+}
+
