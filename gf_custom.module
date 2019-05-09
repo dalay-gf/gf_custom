@@ -468,3 +468,13 @@ function gf_custom_preprocess_uc_price(&$variables) {
   $variables['suffixes'][] = GF_STOCK_CURRENCY_SYGN[$region];
 }
 
+/**
+ * Implements hook_language_negotiation_info_alter().
+ *
+ * Remove the 'cache' setting from LOCALE_LANGUAGE_NEGOTIATION_BROWSER since
+ * the code that utilizes this setting will in fact prevent browser negotiation.
+ */
+function gf_custom_language_negotiation_info_alter(&$negotiation_info) {
+    unset($negotiation_info[LOCALE_LANGUAGE_NEGOTIATION_BROWSER]['cache']);
+}
+
