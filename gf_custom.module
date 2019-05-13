@@ -162,17 +162,18 @@ function gf_custom_preprocess_node(&$variables) {
  * Implements hook_preprocess_page()
  */
 function gf_custom_preprocess_page(&$vars) {
-  if (isset($vars['node']->model) && !empty($vars['node']->model)) {
+  global $language;
+  if (isset($vars['node']->model) && !empty($vars['node']->model) 
+    && $language->language != 'ru') {
     // На страницe продукта указываем в качестве заголовка - артикул 
-    // продукта. (Задача № 37894)
-    $vars['title'] = $vars['node']->model;
+    // продукта для всех языков кроме русского. (Задача № 37894)
+    drupal_set_title($vars['node']->model);
   }
   // Счетчик товаров в корзине(отдельных позиций, не количество).
   $vars['uc_cart_items_counter'] = count(uc_cart_get_contents());
   // Счетчик общего количества единиц товаров в корзине.
   $vars['uc_cart_qty_counter'] = uc_cart_get_total_qty();
 }
-
 
 /**
  * Implements hook_preprocess_views_view()
