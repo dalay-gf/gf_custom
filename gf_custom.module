@@ -273,6 +273,7 @@ function _get_node_field($node, $field, $lang = 'en') {
  */
 function gf_custom_node_view($node, $view_mode) {
   static $parents = array();
+  global $language;
 
   if ($view_mode == 'full' && (uc_product_is_product($node->type) || $node->type == 'page')) {
     $crumbs = array();
@@ -294,7 +295,8 @@ function gf_custom_node_view($node, $view_mode) {
 
           foreach (array_reverse($parents[$term['tid']]) as $parent) {
             if (!in_array($parent->tid, $used_tids)) {
-              $crumbs[] = l($parent->name, 'taxonomy/term/' . $parent->tid);
+              $name = gf_custom_get_term_i18n_for_current_lang($parent->tid, $parent->name);
+              $crumbs[] = l($name, 'taxonomy/term/' . $parent->tid, ['html'=>TRUE]);
               $used_tids[] = $parent->tid;
             }
           }
@@ -306,6 +308,20 @@ function gf_custom_node_view($node, $view_mode) {
 
     drupal_set_breadcrumb($crumbs);
   }
+}
+
+
+/**
+ * Хелпер для получения перевода термина таксономи для текущего языка(если он
+ * отличен от русского и перевод имеется.)
+ */
+function gf_custom_get_term_i18n_for_current_lang($tid, $name) {
+  global $language;
+
+  if ($language->language != 'ru' && function_exists('i18n_string')) {
+    $name = i18n_string(['taxonomy', 'term', $tid, 'name'], $name, ['langcode' => $language->language]);
+  }
+  return $name;
 }
 
 
@@ -489,15 +505,14 @@ function gf_custom_language_negotiation_info_alter(&$negotiation_info) {
  */
 function gf_custom_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
   global $language;
-  if ($language->language != 'ru' && isset($form['field_material_tid_selective']) && 
-   function_exists('i18n_string')) {
+  if ($language->language != 'ru' && isset($form['field_material_tid_selective'])) {
     # Хак для исправления ошибки модуля Views Selective Filters, который
     # не возвращает перевод термина для текущего языка.
     $options = $form['field_material_tid_selective']['#options'];
     if (count($options) > 1) {
       foreach($options as $tid=>$name) {
         if ($tid == 'All') continue;
-        $output = i18n_string(array('taxonomy', 'term', $tid, 'name'), $string, array('langcode' => $language->language));
+        $output = gf_custom_get_term_i18n_for_current_lang($tid, $string);
         $form['field_material_tid_selective']['#options'][$tid] = $output;
       }
     }
