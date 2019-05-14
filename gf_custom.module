@@ -488,7 +488,21 @@ function gf_custom_language_negotiation_info_alter(&$negotiation_info) {
  * Implements hook_form_FORM_ID_alter()
  */
 function gf_custom_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-  # Workaround bug "Button values not translated"
+  global $language;
+  if ($language->language != 'ru' && isset($form['field_material_tid_selective']) && 
+   function_exists('i18n_string')) {
+    # Хак для исправления ошибки модуля Views Selective Filters, который
+    # не возвращает перевод термина для текущего языка.
+    $options = $form['field_material_tid_selective']['#options'];
+    if (count($options) > 1) {
+      foreach($options as $tid=>$name) {
+        if ($tid == 'All') continue;
+        $output = i18n_string(array('taxonomy', 'term', $tid, 'name'), $string, array('langcode' => $language->language));
+        $form['field_material_tid_selective']['#options'][$tid] = $output;
+      }
+    }
+  }
+  # Хак для получения перевода для значения кнопки сброса фильтров.
   if (isset($form['reset']['#value'])) {
     $form['reset']['#value'] = t($form['reset']['#value']);
   }
