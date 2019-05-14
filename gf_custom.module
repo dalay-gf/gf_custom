@@ -484,3 +484,13 @@ function gf_custom_language_negotiation_info_alter(&$negotiation_info) {
     unset($negotiation_info[LOCALE_LANGUAGE_NEGOTIATION_BROWSER]['cache']);
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function gf_custom_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+  # Workaround bug "Button values not translated"
+  if (isset($form['reset']['#value'])) {
+    $form['reset']['#value'] = t($form['reset']['#value']);
+  }
+}
+
